@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+*{
+    list-style: none;
+    text-decoration: none;
+    color: #fff;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body{
+    background: #232526;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    font-family: 'Roboto', sans-serif;
+
+}
+
+.header{
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #000428;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #004e92, #000428);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #004e92, #000428); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+footer{
+    padding: .5rem 0;
+    background: #000428;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #004e92, #000428);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #004e92, #000428); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.listado{
+    margin: 1rem 0;
+}
+
+.listado li{
+    margin: 1rem 0;
+    transition: all 400ms;
+    font-size: 1.2rem;
+}
+
+.listado li:hover{
+    margin-left: .5rem;
+}
+
+.title-list{
+    padding: 1rem;
+    text-align: center;
+}
+
+.back{
+    margin: 1.3rem 0;
+    text-align: center;
+}
+
+.cursos{
+    margin: .8rem 0;
+}
+
+.contact{
+    margin: 1rem 0;
+    padding: 2rem;
+}
+
+.user-title{
+    margin: 1rem 0;
+    padding: .5rem;
+}
+
+.formulario{
+    margin-top: 2rem;
+    padding: .8rem;
+    background-color: #004e92;
+    color: #fff;
+    text-align: center;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: .3rem;
+}
+
+.formulario .input{
+    padding: .5rem;
+    display: block;
+    width: 100%;
+    margin: 1rem 0;
+    outline: none;
+    border: none;
+    border-radius: .3rem;
+    color: black;
+}
+
+.formulario .btn-send{
+    background-color: #404040;
+    color: #fff;
+    border: none;
+    border-radius: .3rem;
+    width: 100%;
+    padding: .5rem;
+    cursor: pointer;
+    font-size: 1.15rem;
+    transition: all 500ms;
+}
+
+.formulario .btn-send:hover{
+    background-color: #282828;
+}
+
+.ingreso{
+    display: flex;
+    justify-content: space-between;
+    padding-top: .6rem;
+}
+
+.aviso-ingreso{
+    padding: 1.5rem;
+    text-align: center;
+}
