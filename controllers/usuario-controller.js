@@ -105,7 +105,7 @@ const crearCuentaBV = async(req = request,res = response ) => {
            try{
 
             if(!usuario || !password){
-                return res.status(400).json({
+                return res.status(404).json({
                     msg: 'Usuario y Password son campos obligatorios'
                    });
             }
@@ -113,7 +113,7 @@ const crearCuentaBV = async(req = request,res = response ) => {
             const nuevoUsuario = await Users.findOne({usuario})
 
             if(!nuevoUsuario){
-                return res.status(400).json({
+                return res.status(404).json({
                  msg: `El usuario ${usuario} no se encuentra registrado`
                 });
             }
@@ -130,7 +130,7 @@ const crearCuentaBV = async(req = request,res = response ) => {
         }
 
         const token = await generarToken(nuevoUsuario)
-
+        console.log(token)
         const userInfo = {
             _id: nuevoUsuario._id,
             avatar: nuevoUsuario.avatar,
