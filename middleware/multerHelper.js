@@ -1,9 +1,18 @@
 const multer = require("multer")
+const fs = require('fs');
+const path = require('path');
+
+const uploadsDir = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
 
 // Middleware que detecta la imagen y aplica la configuración
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads')
+        cb(null, uploadsDir)
     },
 filename: (req,file,cb) => {
     const ext = file.originalname.split('.').pop()

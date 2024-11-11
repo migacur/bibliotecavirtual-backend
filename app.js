@@ -6,14 +6,12 @@ require("dotenv").config();
 const Cors = require('cors');
 const bookRouter = require('./routes/books');
 const usuarioRouter = require('./routes/usuarios-bv');
-const multer = require('multer');
-const sharp = require('sharp');
+//const multer = require('multer');
+//const sharp = require('sharp');
 const uploadFile = require('./middleware/multerHelper')
-const path = require('path');
+//const path = require('path');
 // settings
 const PORT = process.env.PORT || 3000;
-//const staticRoute = path.join(__dirname, './uploads')
-//app.use('/apirest', express.static(staticRoute))
 const cloudinary = require('cloudinary').v2
 const fs = require('fs-extra');
 const Users = require('./models/users-bv');
@@ -27,13 +25,7 @@ cloudinary.config({
     api_key: process.env.CLOUD_KEY,
     api_secret: process.env.CLOUD_SECRET
 })
-//Optimizar imagenes
 
-const helperImage = (filePath, fileName, size = 300) => {
-    return sharp(filePath)
-           .resize(size)
-           .toFile(`./optimize/${fileName}.png`)
-}
 
 //ruta para subir imagen
 app.post('/upload-image', uploadFile, async(req,res) => {
