@@ -11,7 +11,7 @@ const userBVSchema = new Schema({
     },
     avatar: { 
         type: String,
-        default: 'https://res.cloudinary.com/dmi8mfcre/image/upload/v1680838567/hlzxbrjn9qfsw8cckope.webp'
+        default: ""
     },
     email: {
         type: String, 
