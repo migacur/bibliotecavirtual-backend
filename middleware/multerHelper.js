@@ -9,7 +9,6 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 
-// Middleware que detecta la imagen y aplica la configuración
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, uploadsDir)
