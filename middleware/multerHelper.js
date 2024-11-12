@@ -4,6 +4,7 @@ const path = require('path');
 
 const uploadsDir = path.join(__dirname, 'uploads');
 
+//Crear carpeta
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
