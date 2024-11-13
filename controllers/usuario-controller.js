@@ -1,7 +1,6 @@
 const { response, request } = require("express");
 const Users = require("../models/users-bv");
 const bcrypt = require("bcrypt");
-const { generarJWT } = require("../validators/generar-jwt");
 const Books = require("../models/book-model");
 const generarToken = require("../helpers/generarToken");
 const generarCodigo = require("../helpers/generarCode");
@@ -157,7 +156,7 @@ const crearCuentaBV = async(req = request,res = response ) => {
 
 
     const agregarUsuarioFavoritos = async(req=request, res=response) => {
-            
+           
             try {
                 const userID = req.params.id
                 const bookID = req.body
@@ -177,9 +176,9 @@ const crearCuentaBV = async(req = request,res = response ) => {
                     })
                 }
 
-                if(user.favoritos.length === 10){
+                if(user.favoritos.length === 20){
                     return res.status(400).json({
-                        msg: 'NO puedes tener más de 10 libros en favoritos.'
+                        msg: 'NO puedes agregar más de 20 libros a favoritos.'
                     })
                 }
 

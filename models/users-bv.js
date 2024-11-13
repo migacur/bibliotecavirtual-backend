@@ -44,7 +44,7 @@ const userBVSchema = new Schema({
 }, {versionKey: false});
 
 userBVSchema.methods.toJSON = function() {
-    const { password, ...user  } = this.toObject();
+    const { password, email, ...user  } = this.toObject();
     return user;
 }
 
