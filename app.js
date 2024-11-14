@@ -11,12 +11,7 @@ const cloudinary = require("cloudinary").v2;
 const fs = require("fs-extra");
 const Users = require("./models/users-bv");
 
-const corsOptions = {
-  origin: "http://localhost:3000",
-  optionsSuccessStatus: 200,
-};
-
-app.use(Cors(corsOptions));
+app.use(Cors());
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,

@@ -16,7 +16,7 @@ const createTransport = () => {
 const sendEmailCode = async(userRegister, codigo) => {
     const transporter = createTransport()
     let info = await transporter.sendMail({
-        from: 'migueljes94@gmail.com',
+        from: process.env.GMAIL_USER,
         to: `${userRegister.email}`, 
         subject: 'Recupera tu cuenta - BIBLIOTECA VIRTUAL ETI',
    

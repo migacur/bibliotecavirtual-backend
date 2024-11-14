@@ -277,7 +277,7 @@ const crearCuentaBV = async(req = request,res = response ) => {
         
         
         //actualizar usuario
-        user.userCode = code;
+        await user.userCode = code;
         await user.save()
         await sendEmailCode(user, code)
 
