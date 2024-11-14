@@ -133,12 +133,11 @@ const crearCuentaBV = async(req = request,res = response ) => {
         }
 
         const token = await generarToken(nuevoUsuario)
-        console.log(token)
+
         const userInfo = {
             _id: nuevoUsuario._id,
             avatar: nuevoUsuario.avatar,
-            favoritos: nuevoUsuario.favoritos,
-            rol: nuevoUsuario.rol
+            favoritos: nuevoUsuario.favoritos
         }
 
         return res.json({
