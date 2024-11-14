@@ -11,7 +11,6 @@ const cloudinary = require("cloudinary").v2;
 const fs = require("fs-extra");
 const Users = require("./models/users-bv");
 const cookieParser = require("cookie-parser");
-const { cloudinaryConfig } = require("./config/cloudinary");
 
 app.use(cookieParser());
 app.use(Cors());
@@ -24,7 +23,7 @@ cloudinary.config({
 
 //ruta para subir imagen
 app.post("/upload-image", uploadFile, async (req, res) => {
-  const result = await cloudinaryConfig.uploader.upload(req.file.path);
+  const result = await cloudinary.uploader.upload(req.file.path);
 
   await fs.unlink(req.file.path);
 
@@ -32,7 +31,7 @@ app.post("/upload-image", uploadFile, async (req, res) => {
 });
 
 app.post("/change-avatar/:id", uploadFile, async (req, res) => {
-  const result = await cloudinaryConfig.uploader.upload(req.file.path);
+  const result = await cloudinary.uploader.upload(req.file.path);
 
   const usuario = await Users.findById({ _id: req.params.id });
 
