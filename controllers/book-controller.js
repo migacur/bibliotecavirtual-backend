@@ -48,8 +48,11 @@ const mostrarLibroCategoria = async(req = request, res = response) => {
 
 const agregarLibro = async(req = request, res = response) => {
 
+    if(!req.payload.id){
+        return res.status(401).status({msg:"NO se pudo realizar esta acción"})
+    }
+
     const result = await cloudinary.uploader.upload(req.file.path)
-    console.log(result)
 
         try {
 
@@ -76,6 +79,11 @@ const actualizarLibro = async(req = request, res = response) => {
    
 
     try {
+
+        if(!req.payload.id){
+            return res.status(401).status({msg:"NO se pudo realizar esta acción"})
+        }
+
         const updateBook = await Books.findByIdAndUpdate({_id: id}, nuevaData)
         
         if(req.file){
@@ -101,9 +109,13 @@ const actualizarLibro = async(req = request, res = response) => {
 }
 
 const borrarLibro = async(req = request, res = response) => {
-
   
     try {
+
+        if(!req.payload.id){
+            return res.status(404).json({msg: "No estás autorizado a realizar esta petición"})
+        }
+
         const deleteBook = await Books.findOneAndDelete({_id : req.params.id})
 
         if(!deleteBook){

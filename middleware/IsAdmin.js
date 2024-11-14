@@ -5,11 +5,12 @@ const Roles = require("../models/role-model");
 const validarRoleBv = async(req = request, res=response, next) => {
     
   try {
+
     const user = await Users.findById({_id: req.payload.id});
     const role = await Roles.findOne({rol: user.rol});
 
     if(!user){
-      return res.status(403).json({ msg: 'Usuario no encontrado' });
+      return res.status(404).json({ msg: 'Usuario NO encontrado/autorizado' });
     }
 
     if (role.rol === 'ADMIN_ROLE') {

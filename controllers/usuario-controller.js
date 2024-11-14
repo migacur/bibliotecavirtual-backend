@@ -33,6 +33,10 @@ const mostrarUser = async(req= request, res=response) => {
 
     try {
 
+        if(!req.payload.id){
+            return res.status(401).json({msg:"Acceso Denegado"})
+        }
+
         const user = await Users.findById({_id: req.payload.id})
     
         if(!user){
