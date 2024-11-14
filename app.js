@@ -10,10 +10,13 @@ const PORT = process.env.PORT || 3000;
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs-extra");
 const Users = require("./models/users-bv");
-const cookieParser = require("cookie-parser");
 
-app.use(cookieParser());
-app.use(Cors());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
+
+app.use(Cors(corsOptions));
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
