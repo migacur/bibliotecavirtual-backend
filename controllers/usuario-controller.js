@@ -3,9 +3,6 @@ const Users = require("../models/users-bv");
 const bcrypt = require("bcrypt");
 const Books = require("../models/book-model");
 const generarToken = require("../helpers/generarToken");
-const generarCodigo = require("../helpers/generarCode");
-const sendEmailCode = require("../libs/emailCode");
-const sendEmailConfirm = require("../libs/emailConfirm");
 
 const mostrarUsuarios = async(req= request, res=response) => {
 
@@ -263,113 +260,6 @@ const crearCuentaBV = async(req = request,res = response ) => {
    
     }
 
-    const enviarCorreo = async(req=request, res=response) => {
-        
-        const user = await Users.findOne({email: req.body.email})
-        
-        if(!user){
-            return res.status(400).json({
-                msg: 'No hay usuario registrado con ese correo electrónico'
-            })
-        }
-
-        const code = generarCodigo(6)
-        
-        
-        //actualizar usuario
-        user.userCode = code;
-        await user.save()
-        await sendEmailCode(user, code)
-
-        return res.status(200).json({
-            msg: 'Código de recuperación enviado a su correo'
-        })
-
-    }
-
-    const enviarCodigo =  async(req=request, res=response) => {
-           const correo = req.body.email;
-           const code = req.body.code;
-           
-           const user = await Users.findOne({email: correo});
-        
-           if(!user){
-            return res.status(400).json({
-                msg: 'No hay usuario registrado con ese correo electrónico'
-            })
-           }
-
-           if(code !== user.userCode){
-            return res.status(400).json({
-                msg: 'El código de verificación es inválido'
-            })
-           }
-
-           if(req.body.password !== req.body.repeatPassword){
-            return res.status(400).json({
-                msg: 'Las contraseñas no coinciden'
-            })
-           }
-
-           const hashPassword = bcrypt.genSaltSync(10)
-           user.password = bcrypt.hashSync( req.body.password, hashPassword);
-           await user.save()
-           user.userCode = null;
-           await user.save()
-           
-           return res.status(200).json({
-            msg: 'Contraseña modificada con exito'
-           })
-    }
-    
-    const confirmarCorreo = async(req=request, res=response) => {
-            
-      const searchUser = await Users.findById(req.params.id)
-
-      if(!searchUser){
-        return res.status(400).json({
-            msg: 'No se encontró usuario registrado con ese correo electrónico'
-        })
-      }
-      
-      const code = generarCodigo(6)
-      await sendEmailConfirm(searchUser, code)
-
-      searchUser.userCode = code
-      await searchUser.save()
-    
-      return res.status(200).json({
-        msg: 'Se ha enviado el código para confirmar su correo'
-      })
-    }
-
-    const codeConfirmEmail = async(req=request, res=response) => {
-            
-        const user = await Users.findOne({email: req.body.email});
-
-        if(!user){
-            return res.status(400).json({
-                msg: 'No hay usuario registrado con ese correo electrónico'
-            })
-           }
-        
-        if(req.body.code !== user.userCode){
-            return res.status(400).json({
-                msg: 'El código de verificación es inválido'
-            })
-        }
-
-        user.userCode = null;
-        await user.save()
-        user.state = true;
-        await user.save()
-
-        return res.status(200).json({
-            msg: 'Tu correo ha sido confirmado con éxito'
-        })
-
-    }
-
     module.exports = {
         mostrarUsuarios,
         mostrarUser,
@@ -378,8 +268,4 @@ const crearCuentaBV = async(req = request,res = response ) => {
         agregarUsuarioFavoritos,
         mostrarFavoritos,
         borrarFavorito,
-        enviarCorreo,
-        enviarCodigo,
-        confirmarCorreo,
-        codeConfirmEmail
     }

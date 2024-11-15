@@ -12,17 +12,8 @@ const fs = require("fs-extra");
 const Users = require("./models/users-bv");
 
 // Configuración de CORS 
-app.use(cors({ origin: 'https://bibliotecavirtual-frontend.onrender.com', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
-  allowedHeaders: ['Content-Type', 'Authorization'] })); 
+app.use(cors()); 
   
-app.use((req, res, next) => { 
-  res.header('Access-Control-Allow-Origin', 
-    'https://bibliotecavirtual-frontend.onrender.com'); 
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
-    next(); 
-});
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
