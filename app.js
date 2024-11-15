@@ -55,7 +55,7 @@ app.use(express.json());
 app.use(bookRouter);
 app.use(usuarioRouter);
 
-app.get("/contacto", (req, res) => {
+app.get("/contacto", (_, res) => {
   res.render("contacto");
 });
 

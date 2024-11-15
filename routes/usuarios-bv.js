@@ -8,10 +8,6 @@ const {
   agregarUsuarioFavoritos,
   mostrarFavoritos,
   borrarFavorito,
-  enviarCorreo,
-  enviarCodigo,
-  confirmarCorreo,
-  codeConfirmEmail,
 } = require("../controllers/usuario-controller");
 const { validateResult } = require("../helpers/validateHelper");
 const validarRoleBv = require("../middleware/IsAdmin");
@@ -52,14 +48,6 @@ usuarioRouter.post(
 usuarioRouter.get("/mostrarfavoritos/:id", authVerifyToken, mostrarFavoritos);
 
 usuarioRouter.put("/borrar-favorito/:id", authVerifyToken, borrarFavorito);
-
-usuarioRouter.post("/forgot-password", enviarCorreo);
-
-usuarioRouter.post("/reset-password", enviarCodigo);
-
-usuarioRouter.put("/confirmar-correo/:id", authVerifyToken, confirmarCorreo);
-
-usuarioRouter.put("/codigo-confirmacion", authVerifyToken, codeConfirmEmail);
 
 usuarioRouter.get("/verify", authVerifyToken, (req, res) => {
   res.json(req.payload);
