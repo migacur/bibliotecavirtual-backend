@@ -2,7 +2,7 @@ const express = require("express");
 const { default: mongoose } = require("mongoose");
 const app = express();
 require("dotenv").config();
-const Cors = require("cors");
+const cors = require("cors");
 const bookRouter = require("./routes/books");
 const usuarioRouter = require("./routes/usuarios-bv");
 const uploadFile = require("./middleware/multerHelper");
@@ -11,14 +11,17 @@ const cloudinary = require("cloudinary").v2;
 const fs = require("fs-extra");
 const Users = require("./models/users-bv");
 
+// Configuración de CORS 
+app.use(cors({ origin: 'https://bibliotecavirtual-frontend.onrender.com', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+  allowedHeaders: ['Content-Type', 'Authorization'] })); 
+  
 app.use((req, res, next) => { 
-  res.header('Access-Control-Allow-Origin', 'https://bibliotecavirtual-frontend.onrender.com'); 
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); 
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
-  next(); 
+  res.header('Access-Control-Allow-Origin', 
+    'https://bibliotecavirtual-frontend.onrender.com'); 
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
+    next(); 
 });
-
-app.use(Cors());
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
