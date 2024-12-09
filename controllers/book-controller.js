@@ -21,6 +21,11 @@ const mostrarLibroCategoria = async(req = request, res = response) => {
 
     const page = parseInt(req.query.page) || 1;
     const pageSize = 8;
+    const usuario = req.payload
+
+    if(!usuario){
+        return res.status(401).json({msg:"Debes registrarte/ingresar para tener acceso a los libros"})
+    }
 
     const count = await Books.countDocuments({categoria: req.params.categoria})
 
