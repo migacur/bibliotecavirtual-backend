@@ -10,10 +10,17 @@ const PORT = process.env.PORT || 3000;
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs-extra");
 const Users = require("./models/users-bv");
+const cookieParser = require("cookie-parser");
+
 
 // Configuración de CORS 
-app.use(cors()); 
-  
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+}));
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
@@ -50,6 +57,7 @@ app.post("/change-avatar/:id", uploadFile, async (req, res) => {
 });
 
 // middlewares
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bookRouter);
