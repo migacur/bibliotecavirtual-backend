@@ -3,6 +3,7 @@ const Users = require("../models/users-bv");
 const bcrypt = require("bcrypt");
 const Books = require("../models/book-model");
 const generarToken = require("../helpers/generarToken");
+const { validationResult } = require("express-validator");
 
 const mostrarUsuarios = async(req= request, res=response) => {
 
@@ -30,7 +31,7 @@ const mostrarUser = async(req= request, res=response) => {
 
     try {
 
-        if(!req.payload.id){
+        if(!req.payload){
             return res.status(401).json({msg:"Acceso Denegado"})
         }
 
@@ -63,10 +64,9 @@ const crearCuentaBV = async(req = request,res = response ) => {
 
    try {
 
-    if(!usuario || !email || !password || !repeat){
-        return res.status(400).json({
-            msg: 'Todos los campos son obligatorios'
-        })
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
     if(password !== repeat){

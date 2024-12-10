@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { check } = require("express-validator");
+const { body } = require("express-validator");
 const {
   crearCuentaBV,
   confirmarLogin,
@@ -9,11 +9,9 @@ const {
   mostrarFavoritos,
   borrarFavorito,
 } = require("../controllers/usuario-controller");
-const { validateResult } = require("../helpers/validateHelper");
 const validarRoleBv = require("../middleware/IsAdmin");
 const existeEmailBv = require("../validators/validar-email");
 const existeUser = require("../validators/validar-user");
-const validarLongitud = require("../validators/validarData");
 const authCookieJWT = require("../middleware/authJwtCookie");
 const usuarioRouter = Router();
 
@@ -30,9 +28,26 @@ usuarioRouter.post(
   [
     existeUser,
     existeEmailBv,
-    validarLongitud,
-    check("email", "Ingresa un correo electrónico válido").isEmail(),
-    validateResult,
+    body("usuario")
+    .isLength({ min: 8 })
+    .withMessage("El usuario debe tener al menos 8 caracteres")
+    .matches(/^\S*$/)
+    .withMessage("El nombre de usuario no debe contener espacios")
+    .matches(
+      /^(?=.*[A-Za-z].*[A-Za-z].*[A-Za-z].*[A-Za-z].*[A-Za-z])[A-Za-z0-9]*$/
+    )
+    .withMessage("El nombre de usuario debe contener al menos 5 letras"),
+  body("email")
+    .isEmail()
+    .withMessage("Debes ingresar un email válido")
+    .normalizeEmail(),
+    body("password")
+    .isLength({ min: 8 })
+    .withMessage("La contraseña debe tener al menos 8 caracteres")
+    .matches(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#])/)
+    .withMessage(
+      "La contraseña debe incluir una letra mayúscula, un número y un caracter especial"
+    ),
   ],
   crearCuentaBV
 );

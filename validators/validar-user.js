@@ -9,7 +9,7 @@ const existeUser = async(req=request, res=response, next) => {
 
       if(existe){
           return res.status(400).json({
-            msg: `El usuario: ${usuario} ya se encuentra registrado`
+            msg: `El usuario ${usuario} ya se encuentra registrado`
           })
 
       }
