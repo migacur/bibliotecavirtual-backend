@@ -22,12 +22,6 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://bibliotecavirtual-frontend.onrender.com");
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-});
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
