@@ -15,7 +15,7 @@ const cookieParser = require("cookie-parser");
 
 // Configuración de CORS 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "https://bibliotecavirtual-frontend.onrender.com/",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
