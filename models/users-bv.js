@@ -14,7 +14,7 @@ const userBVSchema = new Schema({
         default: "",
         validate: {
             validator: function(v) {
-                return /^https:\/\//.test(v);
+                return v === "" || /^https:\/\//.test(v);
             },
             message: props => `${props.value} no es una URL segura (debe ser https://)!`
         }
