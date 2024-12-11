@@ -132,9 +132,9 @@ const crearCuentaBV = async(req = request,res = response ) => {
         const token = await generarToken(nuevoUsuario)
 
         res.cookie("token_de_acceso", token, {
-            httpOnly: true,
-            sameSite: "Strict",
-            secure: true,
+           httpOnly: true, 
+           secure: true, 
+           sameSite: 'None'
           });
 
         const userInfo = {
