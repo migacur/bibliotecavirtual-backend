@@ -148,7 +148,7 @@ const buscarLibro = async(req = request, res = response) => {
     
    const cadena = libro.normalize('NFD').replace(/[\u0300-\u036f]/g,"")
 
-   if(!cadena.length < 3){
+   if(cadena.length < 3){
     return res.status(400).json({msg:"Tienes que ingresar al menos 3 caracteres"})
    }
 
