@@ -13,54 +13,61 @@ const Users = require("./models/users-bv");
 const cookieParser = require("cookie-parser");
 
 // Configuración de CORS
-app.use(
-  cors({
-    origin: "https://bibliotecavirtual-frontend.onrender.com",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+const allowedOrigins = ["http://localhost:3000","https://bibliotecavirtual-frontend.onrender.com"];
 
+app.use(cors({
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
+// Middlewares
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Configuración de Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
   api_secret: process.env.CLOUD_SECRET,
 });
 
-//ruta para subir imagen
+// Rutas para subir imagen
 app.post("/upload-image", uploadFile, async (req, res) => {
   const result = await cloudinary.uploader.upload(req.file.path);
-
   await fs.unlink(req.file.path);
-
-  res.send("Imagen cargado");
+  res.send("Imagen cargada");
 });
 
 app.post("/change-avatar/:id", uploadFile, async (req, res) => {
   const result = await cloudinary.uploader.upload(req.file.path);
-
   const usuario = await Users.findById({ _id: req.params.id });
 
   if (!usuario) {
-    return res.status(400).json({
-      msg: "Ha ocurrido un error",
-    });
+    return res.status(400).json({ msg: "Ha ocurrido un error" });
   }
 
   usuario.avatar = result.url;
-
   await usuario.save();
-
   await fs.unlink(req.file.path);
-
   res.send(result.url);
 });
 
-// middlewares
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// Usar rutas
 app.use(bookRouter);
 app.use(usuarioRouter);
 
