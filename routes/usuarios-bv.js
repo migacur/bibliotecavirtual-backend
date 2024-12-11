@@ -32,11 +32,7 @@ usuarioRouter.post(
     .isLength({ min: 8 })
     .withMessage("El usuario debe tener al menos 8 caracteres")
     .matches(/^\S*$/)
-    .withMessage("El nombre de usuario no debe contener espacios")
-    .matches(
-      /^(?=.*[A-Za-z].*[A-Za-z].*[A-Za-z].*[A-Za-z].*[A-Za-z])[A-Za-z0-9]*$/
-    )
-    .withMessage("El nombre de usuario debe contener al menos 5 letras"),
+    .withMessage("El nombre de usuario no debe contener espacios"),
   body("email")
     .isEmail()
     .withMessage("Debes ingresar un email válido")
