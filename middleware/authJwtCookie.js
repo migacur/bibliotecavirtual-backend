@@ -9,7 +9,7 @@ const authCookieJWT = (req, res, next) => {
 
   jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
     if (err) {
-      return res.status(403).send('Prohibido el acceso');
+      return res.status(403).json({msg:'Prohibido el acceso'});
     }
     req.payload = user;
     next();
