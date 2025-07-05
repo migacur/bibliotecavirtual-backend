@@ -98,66 +98,57 @@ const crearCuentaBV = async(req = request,res = response ) => {
     }
 
     
-    const confirmarLogin = async(req = request, res = response) => {
+    const confirmarLogin = async (req, res) => {
+    const { usuario, password } = req.body;
 
-        const { usuario, password } = req.body;
-
-           try{
-
-            if(!usuario || !password){
-                return res.status(404).json({
-                    msg: 'Usuario y Password son campos obligatorios'
-                   });
-            }
-
-            const nuevoUsuario = await Users.findOne({usuario})
-
-            if(!nuevoUsuario){
-                return res.status(404).json({
-                 msg: `El usuario ${usuario} no se encuentra registrado`
-                });
-            }
-         
-    
-        // Verificar la contraseña
-        const validarPassword = bcrypt
-            .compareSync( password, nuevoUsuario.password)
-        
-        if( !validarPassword ){
-            return res.status(400).json({
-            msg: 'La contraseña es incorrecta'
+    try {
+        if (!usuario || !password) {
+            return res.status(400).json({ // 400 es más adecuado
+                msg: 'Usuario y Password son campos obligatorios'
             });
         }
 
-        const token = await generarToken(nuevoUsuario)
+        // Busca solo el password + campos necesarios
+        const nuevoUsuario = await Users.findOne({ usuario })
+            .select('+password avatar favoritos');
+
+        if (!nuevoUsuario) {
+            return res.status(404).json({
+                msg: `Credenciales inválidas` // Mensaje genérico por seguridad
+            });
+        }
+
+        // Comparación asíncrona
+        const validarPassword = await bcrypt.compare(password, nuevoUsuario.password);
+        if (!validarPassword) {
+            return res.status(401).json({ // 401 Unauthorized
+                msg: 'Credenciales inválidas' // Mismo mensaje que usuario incorrecto
+            });
+        }
+
+        const token = await generarToken(nuevoUsuario);
 
         res.cookie("token_de_acceso", token, {
-           httpOnly: true, 
-           secure: true, 
-           sameSite: 'None'
-          });
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
+        });
 
         const userInfo = {
             _id: nuevoUsuario._id,
             avatar: nuevoUsuario.avatar,
             favoritos: nuevoUsuario.favoritos
-        }
+        };
 
-        return res.json({
-            userInfo,
-            token
-        })
-           
-           }catch(e){
-            console.log(e)
-              return res.status(500).json({
-                    msg: 'Hubo un error, contacte con el administrador de la web'
-                })
-           }
-                
-            
+        return res.json({ userInfo });
+
+    } catch (e) {
+        console.error("Error en login:", e);
+        return res.status(500).json({
+            msg: 'Error interno del servidor'
+        });
     }
-
+};
 
 
 
