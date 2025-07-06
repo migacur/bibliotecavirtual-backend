@@ -99,7 +99,7 @@ const confirmarLogin = async (req = request, res = response) => {
     }
 
     // Verificar la contraseña
-    bcrypt.compare(password, usuario.passwordHash).then((esValido) => {
+    bcrypt.compare(password, usuario.password).then((esValido) => {
       if (!esValido) {
         return res.status(400).json({
           msg: "La contraseña es incorrecta",
