@@ -17,39 +17,47 @@ const mostrarLibro = async(req = request, res = response) => {
 
 }
 
-const mostrarLibroCategoria = async(req = request, res = response) => {
-
+const mostrarLibroCategoria = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const pageSize = 8;
-    const usuario = req.payload
+    const usuario = req.payload;
 
-    if(!usuario){
-        return res.status(401).json({msg:"Debes registrarte/ingresar para tener acceso a los libros"})
+    if (!usuario) {
+        return res.status(401).json({ msg: "Debes registrarte/ingresar para tener acceso a los libros" });
     }
 
-    const count = await Books.countDocuments({categoria: req.params.categoria})
+    const categoria = req.params.categoria;
 
-    const findBooks = await Books.find({categoria: req.params.categoria})
-                      .skip((page -1) * pageSize)
-                      .limit(pageSize);
+    try {
+        // Optimización 1: Ejecutar count y find en paralelo
+        const [count, findBooks] = await Promise.all([
+            Books.countDocuments({ categoria }),
+            Books.find({ categoria })
+                .select('titulo autor imagen _id') // Solo los campos necesarios
+                .lean() // Convierte a objetos planos (más rápido)
+                .skip((page - 1) * pageSize)
+                .limit(pageSize)
+        ]);
+
+        // Optimización 2: Manejo más eficiente de resultados vacíos
+        if (count === 0) {
+            return res.status(404).json({ msg: 'No hay libros en esta categoría' });
+        }
 
         const response = {
             findBooks,
             currentPage: page,
             totalPages: Math.ceil(count / pageSize),
-            bookCount : count
-        }
-      
-    if(!findBooks){
-        return res.status(400).json({
-            msg: 'No hay libros para mostrar'
-        });
+            bookCount: count
+        };
+
+        return res.json(response);
+
+    } catch (error) {
+        console.error('Error en mostrarLibroCategoria:', error);
+        return res.status(500).json({ msg: 'Error interno del servidor' });
     }
-
-    return res.json(response)
-
-}
-
+};
 
 const agregarLibro = async(req = request, res = response) => {
 
