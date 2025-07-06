@@ -7,8 +7,7 @@ const userBVSchema = new Schema({
         type: String, 
         required: [true, 'El usuario es obligatorio'],
         unique: true,
-        lowercase: true,
-        index: true 
+        lowercase: true
     },
     avatar: { 
         type: String,
