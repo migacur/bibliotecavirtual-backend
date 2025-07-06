@@ -62,16 +62,17 @@ const crearCuentaBV = async (req = request, res = response) => {
       });
     }
 
-    const user = await new Users({ usuario, email, password });
+   // const user = await new Users({ usuario, email, password });
 
-    const hashPassword = bcrypt.genSaltSync(6);
-    user.password = bcrypt.hashSync(password, hashPassword);
+   // const hashPassword = bcrypt.genSaltSync(6);
+   // user.password = bcrypt.hashSync(password, hashPassword);
+
+   const user = new Users({ usuario, email });
+    user.password = await bcrypt.hash(password, 6);
 
     await user.save();
 
-    return res.json({
-      user,
-    });
+    return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).json({
       msg: "Hubo un error, contacte con el administrador de la web",
