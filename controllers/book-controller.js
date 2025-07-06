@@ -33,7 +33,7 @@ const mostrarLibroCategoria = async (req, res) => {
         const [count, findBooks] = await Promise.all([
             Books.countDocuments({ categoria }),
             Books.find({ categoria })
-                .select('titulo autor imagen _id') // Solo los campos necesarios
+                .select('titulo autor imagen enlace _id') // Solo los campos necesarios
                 .lean() // Convierte a objetos planos (más rápido)
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)
