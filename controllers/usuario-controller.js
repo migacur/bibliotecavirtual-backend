@@ -97,9 +97,11 @@ const confirmarLogin = async (req = request, res = response) => {
         msg: `El usuario ${usuario} no se encuentra registrado`,
       });
     }
-
+    console.log("--- DATOS DEL USUARIO ---")
+    console.log(nuevoUsuario)
+    console.log("--- DATOS DEL USUARIO ---")
     // Verificar la contraseña
-    bcrypt.compare(password, usuario.password).then((esValido) => {
+    bcrypt.compare(password, nuevoUsuario.password).then((esValido) => {
       if (!esValido) {
         return res.status(400).json({
           msg: "La contraseña es incorrecta",
